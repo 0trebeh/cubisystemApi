@@ -21,5 +21,6 @@ server.use(
 
 //rutas
 server.use('/api/users', require('./routes/users'));
+server.use('/api/request', require('./routes/request'));
 
 module.exports = server;

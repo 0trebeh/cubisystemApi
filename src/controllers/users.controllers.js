@@ -1,27 +1,11 @@
 const pool = require('../utils/dbconnection');
-const { mail } = require('../utils/mailer');
 const query = require('../utils/queries');
 
-const getName = async (req, res) => {
-  const client = await pool.connect();
-  try{
-    const { nombre } = req.body;
-    const response = await client.query(query.getName1, [nombre]);
-    const response2 = await client.query(query.getName2, [nombre]);
-    const response3 = await client.query(query.getName3, [nombre]);
-    res.status(200).json([response.rows, response2.rows, response3.rows]);
-  }catch{
-    res.status(505);
-  }finally{
-    client.release(true);
-  }
-};
-
-const getEmpleados = async (req, res) => {
+const getUser = async (req, res) => {
   const client = await pool.connect();
   try{
     const id = parseInt(req.params.id);
-    const response = await client.query(query.getUsers, [id]);
+    const response = await client.query(query.getUser, [id]);
     res.status(200).json(response.rows);
   }catch{
     res.status(505);
@@ -30,11 +14,50 @@ const getEmpleados = async (req, res) => {
   }
 };
 
-const getAdmins = async (req, res) => {
+const getLogin = async (req, res) => {
+  const client = await pool.connect();
+  try{
+    const { email } = req.body;
+    const response = await client.query(query.getLogin, [email]);
+    res.status(200).json(response.rows);
+  }catch{
+    res.status(505);
+  }finally{
+    client.release(true);
+  }
+};
+
+const createUser = async (req, res) => {
+  const client = await pool.connect();
+  try{
+    const { nombre, telefono, email, password } = req.body;
+    const response = await client.query(query.createUser, [
+      nombre, 
+      telefono, 
+      email, 
+      password, 
+      false
+    ]);
+
+    res.status(200).json(response.rows);
+  }catch{
+    res.status(505);
+  }finally{
+    client.release(true);
+  }
+};
+
+const updateUser = async (req, res) => {
   const client = await pool.connect();
   try{
     const id = parseInt(req.params.id);
-    const response = await client.query(query.getAdmins, [id]);
+    const { nombre, telefono } = req.body;
+
+    const response = await client.query(query.updateUser, [
+      nombre, 
+      telefono,
+      id
+    ]);
     res.status(200).json(response.rows);
   }catch{
     res.status(505);
@@ -43,19 +66,16 @@ const getAdmins = async (req, res) => {
   }
 };
 
-const createEmpresa = async (req, res) => {
+const updatePassword = async (req, res) => {
   const client = await pool.connect();
   try{
-    const { nombre, email, password } = req.body;
-    console.log(nombre, email, password);
-    const response = await client.query(query.createEmpresa, [
-      nombre, 
-      email,
-      password
-    ]);
+    const id = parseInt(req.params.id);
+    const { password } = req.body;
 
-    //send email of welcome
-    await mail(nombre, email, "empresa");
+    const response = await client.query(query.updatePassword, [
+      password,
+      id
+    ]);
     res.status(200).json(response.rows);
   }catch{
     res.status(505);
@@ -64,58 +84,12 @@ const createEmpresa = async (req, res) => {
   }
 };
 
-const createAdmin = async (req, res) => {
-  const client = await pool.connect();
-  try{
-    const { nombre, email, clave, empresa_id } = req.body;
-    console.log(nombre, email, clave, empresa_id);
-    const response = await client.query(query.createAdmin, [
-      nombre, 
-      email,
-      clave,
-      empresa_id
-    ]);
-
-    //send email of welcome
-    await mail(nombre, email, "admin", clave);
-    res.status(200).json(response.rows);
-  }catch{
-    res.status(505);
-  }finally{
-    client.release(true);
-  }
-};
-
-const createEmpleado = async (req, res) => {
-  const client = await pool.connect();
-  try{
-    const { nombre, email, cargo, clave, empresa_id, admin_id } = req.body;
-    console.log(nombre, email, cargo, clave, admin_id);
-    const response = await client.query(query.createEmpleado, [
-      nombre, 
-      email,
-      cargo,
-      clave,
-      empresa_id,
-      admin_id
-    ]);
-
-    //send email of welcome
-    await mail(nombre, email, "empleado", clave);
-    res.status(200).json(response.rows);
-  }catch{
-    res.status(505);
-  }finally{
-    client.release(true);
-  }
-};
-
-const deleteEmpleado = async (req, res) => {
+const deleteUser = async (req, res) => {
   const client = await pool.connect();
   try{
       const id = parseInt(req.params.id);
-      await client.query(query.deleteEmpleado, [ id ]);
-      res.status(200).json(`Empleado con id: ${id} deleted Successfully`);
+      await client.query(query.deleteUser, [ id ]);
+      res.status(200).json(`User con id: ${id} deleted Successfully`);
   }catch{
       res.status(505);
   }finally{
@@ -124,11 +98,10 @@ const deleteEmpleado = async (req, res) => {
 };
 
 module.exports = {
-  getAdmins,
-  getName,
-  getEmpleados,
-  createEmpresa,
-  createAdmin,
-  createEmpleado,
-  deleteEmpleado
+  getUser,
+  getLogin,
+  createUser,
+  updateUser,
+  updatePassword,
+  deleteUser
 };

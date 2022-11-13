@@ -2,21 +2,19 @@ const { Router } = require('express');
 const router = Router();
 
 const { 
-    getName,
-    getEmpleados, 
-    createEmpresa, 
-    createAdmin,
-    createEmpleado,
-    getAdmins,
-    deleteEmpleado
+    getUser,
+    getLogin,
+    createUser,
+    updateUser,
+    updatePassword,
+    deleteUser
 } = require('../controllers/users.controllers');
 
-router.get('/:id', getEmpleados);
-router.get('/admins/:id', getAdmins);
-router.post('/comprobName', getName);
-router.post('/empresa', createEmpresa);
-router.post('/admin', createAdmin);
-router.post('/empleado', createEmpleado);
-router.delete('/empleado/:id', deleteEmpleado);
+router.get('/:id', getUser);
+router.post('/login', getLogin);
+router.post('/newUser', createUser);
+router.put('/:id', updateUser);
+router.put('password/:id', updatePassword);
+router.delete('/:id', deleteUser);
 
 module.exports = router;

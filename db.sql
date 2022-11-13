@@ -9,8 +9,14 @@ CREATE TABLE "usuario" (
 
 CREATE TABLE "peticiones" (
   "id" serial PRIMARY KEY,
-  "servicio" varchar,
-  "precio" varchar,
+  "tipoServicio" varchar,
+  "dimencion" varchar,
+  "camExt" varchar,
+  "camInt" varchar,
+  "tipoLugar" varchar,
+  "ubicacion" varchar,
+  "numComp" varchar,
+  "costo" float,
   "id_usuario" integer NOT NULL
 );
 

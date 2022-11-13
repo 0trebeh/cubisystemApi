@@ -1,22 +1,23 @@
 module.exports = {
     //Querys Usuario
 
-    getUsers: 'SELECT * FROM empleado WHERE admin_id = $1',
-    getAdmins: 'SELECT * FROM admin WHERE empresa_id = $1',
-    getName1: 'SELECT * FROM empleado WHERE nombre = $1',
-    getName2: 'SELECT * FROM admin WHERE nombre = $1',
-    getName3: 'SELECT * FROM empresa WHERE nombre = $1',
+    getUser: 'SELECT * FROM usuario WHERE id = $1',
+    getLogin: 'SELECT * FROM usuario WHERE email = $1',
 
-    createEmpresa: 'INSERT INTO empresa (nombre, email, password) VALUES ($1, $2, $3) RETURNING *',
-    createAdmin: 'INSERT INTO admin (nombre, email, clave, empresa_id) VALUES ($1, $2, $3, $4) RETURNING *',
-    createEmpleado: 'INSERT INTO empleado (nombre, email, cargo, clave, empresa_id, admin_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    createUser: 'INSERT INTO usuario (nombre, telefono, email, password, admin) VALUES ($1, $2, $3, $4, $5) RETURNING *',
 
-    updateDataEmp: 'UPDATE "dataEmpresa" SET title = $1, descripcion = $2, contacto = $3 WHERE id_empresa = $4 RETURNING *',
+    updateUser: 'UPDATE usuario SET nombre = $1, telefono = $2 WHERE id = $3 RETURNING *',
+    updatePassword: 'UPDATE usuario SET password = $1 WHERE id = $2 RETURNING *',
 
-    deleteEmpleado: 'DELETE FROM "empleado" WHERE "id_empleado" = $1',
+    deleteUser: 'DELETE FROM usuario WHERE "id" = $1',
 
     //Querys peticiones
+    getPeticiones: 'SELECT * FROM peticiones',
 
-    
+    createPeticion: 'INSERT INTO peticiones (tipoServicio, dimencion, camExt, camInt, tipoLugar, ubicacion, numComp, costo, id_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, %9) RETURNING *',
+
+    updatePeticion: 'UPDATE "peticiones" SET costo = $1 WHERE id = $2 RETURNING *',
+
+    deletePeticion: 'DELETE FROM peticiones WHERE id = $1',
 
 }
