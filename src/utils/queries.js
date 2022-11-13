@@ -12,12 +12,12 @@ module.exports = {
     deleteUser: 'DELETE FROM usuario WHERE "id" = $1',
 
     //Querys peticiones
-    getPeticiones: 'SELECT * FROM peticiones',
+    getPeticiones: 'SELECT * FROM "peticiones"',
 
-    createPeticion: 'INSERT INTO peticiones (tipoServicio, dimencion, camExt, camInt, tipoLugar, ubicacion, numComp, costo, id_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, %9) RETURNING *',
+    createPeticion: 'INSERT INTO "peticiones" ("tipoServicio", "dimencion", "camExt", "camInt", "tipoLugar", "ubicacion", "numComp", "costo", "id_usuario") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
 
-    updatePeticion: 'UPDATE "peticiones" SET costo = $1 WHERE id = $2 RETURNING *',
+    updatePeticion: 'UPDATE "peticiones" SET "costo" = $1 WHERE "id" = $2 RETURNING *',
 
-    deletePeticion: 'DELETE FROM peticiones WHERE id = $1',
+    deletePeticion: 'DELETE FROM "peticiones" WHERE "id" = $1',
 
 }

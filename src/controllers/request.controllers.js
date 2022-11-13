@@ -28,6 +28,7 @@ const createPeticion = async (req, res) => {
         costo, 
         id_usuario
     ]);
+    console.log(response.rows)
 
     res.status(200).json(response.rows);
   }catch{

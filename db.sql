@@ -16,7 +16,7 @@ CREATE TABLE "peticiones" (
   "tipoLugar" varchar,
   "ubicacion" varchar,
   "numComp" varchar,
-  "costo" float,
+  "costo" varchar,
   "id_usuario" integer NOT NULL
 );
 
