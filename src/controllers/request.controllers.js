@@ -13,6 +13,19 @@ const getPeticiones = async (req, res) => {
   }
 };
 
+const getPeticion = async (req, res) => {
+  const client = await pool.connect();
+  try{
+    const id = parseInt(req.params.id);
+    const response = await client.query(query.getPeticion, [id]);
+    res.status(200).json(response.rows);
+  }catch{
+    res.status(505);
+  }finally{
+    client.release(true);
+  }
+};
+
 const createPeticion = async (req, res) => {
   const client = await pool.connect();
   try{
@@ -71,8 +84,9 @@ const deletePeticion = async (req, res) => {
 };
 
 module.exports = {
-    getPeticiones,
-    createPeticion,
-    updatePeticion,
-    deletePeticion
+  getPeticion,
+  getPeticiones,
+  createPeticion,
+  updatePeticion,
+  deletePeticion
 };
